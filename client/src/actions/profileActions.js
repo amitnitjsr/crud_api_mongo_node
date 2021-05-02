@@ -9,10 +9,10 @@ import {
 } from './types';
 
 // Get current profile
-export const getCurrentProfile = () => dispatch => {
+export const getAllUsers = () => dispatch => {
   dispatch(setProfileLoading());
   axios
-    .get('/api/profile')
+    .get('/api/users')
     .then(res =>
       dispatch({
         type: GET_PROFILE,
@@ -66,21 +66,27 @@ export const addEducation = (eduData, history) => dispatch => {
     );
 };
 
-// Delete Experience
-export const deleteExperience = id => dispatch => {
+// Delete User
+export const deleteUser = id => dispatch => {
   axios
-    .delete(`/api/profile/experience/${id}`)
-    .then(res =>
+    .delete(`/api/users/${id}`)
+    .then(res => {
+      console.log('res', res)
+      // getAllUsers()();
       dispatch({
         type: GET_PROFILE,
         payload: res.data
       })
+    }
     )
-    .catch(err =>
+    .catch(err => {
+      console.log('errr', err)
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response
       })
+    }
+
     );
 };
 

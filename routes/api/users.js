@@ -125,10 +125,10 @@ router.post('/', [
 router.get('/', async (req, res) => {
     console.log("get user")
     try {
-        const profiles = await User.find().populate(
+        const user = await User.find().populate(
             'user'
         );
-        res.json(profiles);
+        res.json(user);
     }
     catch (err) {
         console.error(err.message);
@@ -171,14 +171,17 @@ router.put('/', async (req, res) => {
 // @route   DELETE /api/users
 // @desc    Delete User
 // @access  Private
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         console.log('res', req.body.id)
         await User.findOneAndRemove({ user: req.body.id });
         // Remove user
         await User.findOneAndRemove({ _id: req.body.id });
-        res.json({ msg: 'User deleted' });
-        // res.json(user);
+        // get user
+        const user = await User.find().populate(
+            'user'
+        );
+        res.json(user);
     }
     catch (err) {
         console.error(err.message);
