@@ -34,6 +34,7 @@ router.post('/', [auth, [check('status', 'Status is required')
     .isEmpty(),
 check('skills', 'Skills is required')]],
     async (req, res) => {
+        console.log("post user")
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
@@ -81,6 +82,7 @@ check('skills', 'Skills is required')]],
 // @desc    Get all profile 
 // @access  Public
 router.get('/', async (req, res) => {
+    console.log("get user")
     try {
         const profiles = await Profile.find().populate(
             'user', ['name', 'avatar']

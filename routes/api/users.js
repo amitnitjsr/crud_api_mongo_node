@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
+const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
 
@@ -120,7 +121,42 @@ router.post('/', [
     }
 });
 
-// @route   GET api/users/login
+// @route   GET api/users
+// @desc    Get all users 
+// @access  Public
+router.get('/', async (req, res) => {
+    console.log("get user")
+    try {
+        const profiles = await User.find().populate(
+            'user'
+        );
+        res.json(profiles);
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   DELETE /api/users
+// @desc    Delete User
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        console.log('res', req)
+        await User.findOneAndRemove({ user: req.user.id });
+        // Remove user
+        await User.findOneAndRemove({ _id: req.user.id });
+        res.json({ msg: 'User deleted' });
+        // res.json(user);
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST api/users/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
