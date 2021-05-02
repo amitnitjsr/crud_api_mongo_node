@@ -112,8 +112,6 @@ router.post('/', [
                 if (err) throw err;
                 res.json({ token });
             });
-        //Return jsonwebtoken
-
     }
     catch (err) {
         console.error(err.message);
@@ -138,15 +136,47 @@ router.get('/', async (req, res) => {
     }
 });
 
+// @route   Update api/users
+// @desc    Updates users 
+// @access  Public
+router.put('/', async (req, res) => {
+    const { name, email, id } = req.body;
+
+    const userFields = {};
+    userFields.user = id;
+    if (name) userFields.name = name;
+    if (email) userFields.email = email;
+
+    try {
+        let user = await User.findOne(
+            { _id: id }
+        );
+        if (user) {
+            //Update user 
+            user = await User.findOneAndUpdate(
+                { _id: id },
+                { $set: userFields },
+                { new: true }
+            );
+            return res.json(user);
+        }
+        res.json(user);
+    }
+    catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // @route   DELETE /api/users
 // @desc    Delete User
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/', async (req, res) => {
     try {
-        console.log('res', req)
-        await User.findOneAndRemove({ user: req.user.id });
+        console.log('res', req.body.id)
+        await User.findOneAndRemove({ user: req.body.id });
         // Remove user
-        await User.findOneAndRemove({ _id: req.user.id });
+        await User.findOneAndRemove({ _id: req.body.id });
         res.json({ msg: 'User deleted' });
         // res.json(user);
     }
