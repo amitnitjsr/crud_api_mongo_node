@@ -1,3 +1,4 @@
 {
+    "jwtSecret": "hellohi",
     "mongoURI": "mongodb+srv://rest_api:99jyzz5eDv5T4CXa@contactkeeper.kszpp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 }
