@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   GET_PROFILE,
+  UPDATE_PROFILE,
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
@@ -32,6 +33,24 @@ export const createProfile = (profileData, history) => dispatch => {
   axios
     .post('/api/profile', profileData)
     .then(res => history.push('/dashboard'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Update Users
+export const updateUser = (profileData, history) => dispatch => {
+  axios
+    .put('/api/users', profileData)
+    .then(res => {
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
