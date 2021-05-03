@@ -123,7 +123,6 @@ router.post('/', [
 // @desc    Get all users 
 // @access  Public
 router.get('/', async (req, res) => {
-    console.log("get user")
     try {
         const user = await User.find().populate(
             'user'
@@ -158,12 +157,10 @@ router.put('/', async (req, res) => {
                 { $set: userFields },
                 { new: true }
             );
-            // return res.json(user);
         }
         user = await User.find().populate(
             'user'
         );
-        // res.json(user);
         res.json(user);
     }
     catch (err) {
