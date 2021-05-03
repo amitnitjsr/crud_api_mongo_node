@@ -4,9 +4,6 @@ const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const app = express();
 
-// DB Config
-const db = require('./config/keys').mongoURI;
-
 // Connect to MongoDB
 connectDB();
 
