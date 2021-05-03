@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllUsers, deleteAccount } from '../../actions/profileActions';
+import { getAllUsers } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 import Table from './TableComponent';
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getAllUsers();
-  }
-
-  onDeleteClick(e) {
-    this.props.deleteAccount();
   }
 
   render() {
@@ -52,7 +48,6 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   getAllUsers: PropTypes.func.isRequired,
-  deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired
 };
@@ -62,6 +57,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getAllUsers, deleteAccount })(
+export default connect(mapStateToProps, { getAllUsers })(
   Dashboard
 );
